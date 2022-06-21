@@ -59,18 +59,32 @@
     </form>
     <%
     	} else {
-    %>
-    	${memberId }님 로그인 중<br>
+    	
+    	out.print(sessionId);
+    %>	
+    	님 로그인 중<br>
     	<a href="logout">LOGOUT(로그아웃)</a>
     <%
     	}
     %>
     </div> 
+    
+    <%
+    	if (sessionId == null) {
+    %>
     <div class="clear"></div>
     <div id="join_search">
       <img src="${pageContext.request.contextPath }/resources/img/btn_join.gif" href="">
       <img src="${pageContext.request.contextPath }/resources/img/btn_search.gif">
     </div>
+    <%
+    	} else {
+    %>
+    <div></div>
+    <%
+    	}
+    %>
+    
   </article>
   <article id="guestbook">
     <div id="guestbook_title">
