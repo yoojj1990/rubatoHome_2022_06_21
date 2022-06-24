@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head> 
@@ -113,8 +114,20 @@
   </div>	
   <p id="view_content">
     ${fbview.fbcontent }
-   <hr>
-  </p>		
+  </p>	
+  <hr>
+  <br>
+  	<p>
+  		※ 첨부파일 : 
+  		<a id="file_info" href="${pageContext.request.contextPath }/resources/uploadfiles/${fileInfo.fileName}">${fileInfo.fileOriName}</a>
+  	</p>
+  	<c:if test="${fileInfo.fileExtension == 'jpg' or fileInfo.fileExtension == 'png' or fileInfo.fileExtension == 'gif' or fileInfo.fileExtension == 'bmp'}">
+	  	<p id="image_view">
+	  		<img width="400" src="${pageContext.request.contextPath }/resources/uploadfiles/${fileInfo.fileName}">
+	  	</p>
+  	</c:if>
+  <br>
+  <hr>	
   <!-- 
   <div id="comment_box">
     <img id="title_comment" src="${pageContext.request.contextPath }/resources/img/title_comment.gif">

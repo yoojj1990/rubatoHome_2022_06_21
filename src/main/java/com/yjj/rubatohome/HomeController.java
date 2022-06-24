@@ -1,16 +1,21 @@
 package com.yjj.rubatohome;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.yjj.rubatohome.dao.IDao;
 import com.yjj.rubatohome.dto.FBoardDto;
@@ -64,7 +69,7 @@ public class HomeController {
 		dao.fbhitDao(fbnum); // 조회수 증가 함수
 		
 		model.addAttribute("fbview", dao.fbviewDao(fbnum));
-		
+		model.addAttribute("fileInfo", dao.fbfileInfoDao(fbnum));
 		
 		return "board_view";
 	}
@@ -93,8 +98,8 @@ public class HomeController {
 		return "logout";
 	}
 	
-	@RequestMapping(value = "/fbWrite")
-	public String fbWrite(HttpServletRequest request) {
+	@RequestMapping(value = "/fbWrite", method = RequestMethod.POST)
+	public String fbWrite(HttpServletRequest request, @RequestPart MultipartFile files) throws Exception {
 		
 		IDao dao = sqlsession.getMapper(IDao.class);
 		
@@ -109,8 +114,37 @@ public class HomeController {
 			fbid = "GUEST";
 		}
 		
-		dao.fbwriteDao(fbname, fbtitle, fbcontent, fbid);
-		
+		if (files.isEmpty()) {  // 사용자가 글 작성시 파일을 첨부 하였는지 여부 판단
+			// 첨부된 파일이 없을 경우 사용자가 작성한 글만 DB에 삽입
+			dao.fbwriteDao(fbname, fbtitle, fbcontent, fbid);
+			
+		} else {  // 사용자가 글 작성시 파일을 첨부
+			
+			dao.fbwriteDao(fbname, fbtitle, fbcontent, fbid);
+			
+			String oriFileName = files.getOriginalFilename();  // 업로드된 파일의 원본이름
+			String oriFileNameExtension = FilenameUtils.getExtension(oriFileName).toLowerCase(); // 업로드된 파일의 확장자 추출(소문자로 전환)
+			File destinationFile; // java.io 페키지의 클레스 임포트 
+			String destinationFileName;  // 실제 서버에 저장되는 파일 이름을 선언
+			String fileUrl = "D:/springBoot_workspace/rubatoHomeProject/src/main/resources/static/uploadfiles/";
+			// 첨부된 파일이 저장될 실제 폴더경로
+			
+			do {
+				destinationFileName = RandomStringUtils.randomAlphanumeric(32) + "." + oriFileNameExtension; 
+				//  파일 이름을 랜덤의 영 대소문자와 숫자가 혼합된 32글자 문자열 생성 후 원본 파일의 확장자 연결하여 실제 저장될 파일의 이름 생성
+				destinationFile = new File(fileUrl + destinationFileName);
+				// fileUrl 경로에 destinationFileName 이름으로 새로운 파일을 임시로 생성
+			} while(destinationFile.exists()); // 같은 이르므이 파일이 저장소에 존재할 경우 다시 파일 이름을 생성 
+			
+			destinationFile.getParentFile().mkdir();
+			files.transferTo(destinationFile);
+			
+			ArrayList<FBoardDto> fbDtos = dao.fblistDao();
+			
+			int fbnum = fbDtos.get(0).getFbnum(); // 가져온 게시글 리스트 중에서 가장 최근 글 불러온 후 getter로 fbnum 만 가져오기
+			
+			dao.fbfileInsertDao(fbnum, destinationFileName, oriFileName, fileUrl, oriFileNameExtension);
+		}
 		
 		return "redirect:board_list";
 	}
