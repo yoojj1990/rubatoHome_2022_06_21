@@ -28,16 +28,29 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/board_list")
-	public String board_list(Model model) {
+	public String board_list(HttpServletRequest request, Model model) {
+		
+		String searchKeyword = request.getParameter("searchKeyword");
+		String searchOption = request.getParameter("searchOption");
 		
 		IDao dao = sqlsession.getMapper(IDao.class);
 		
-		ArrayList<FBoardDto> fboardDtos = dao.fblistDao();
+		ArrayList<FBoardDto> fboardDtos = null;  // 초기값 반드시 넣기 
 		
-		int listcount = dao.fblistcountDao();
+		if(searchOption == null || searchKeyword == null) {
+			fboardDtos = dao.fblistDao();
+		} else {
+			if(searchOption.equals("title")) { // 제목에서 특정 키워드 검색한 결과
+				fboardDtos = dao.fbTitleSearchlistDao(searchKeyword);
+			} else if (searchOption.equals("content")) {  // 내용에서 특정 키워드 검색한 결과
+				fboardDtos = dao.fbContentSearchlistDao(searchKeyword);
+			} else if (searchOption.equals("writer")) {  // 글쓴이에서 특정 키워드 검색한 결과
+				fboardDtos = dao.fbWriteSearchlistDao(searchKeyword);
+			}
+		}
 		
 		model.addAttribute("fblist", fboardDtos);
-		model.addAttribute("listcount", listcount);
+		model.addAttribute("listcount", fboardDtos.size());
 		
 		return "board_list";
 	}
@@ -101,5 +114,22 @@ public class HomeController {
 		
 		return "redirect:board_list";
 	}
+	
+	@RequestMapping(value = "delete")
+	public String delete(HttpServletRequest request) {
+		
+		String fbnum = request.getParameter("fbnum"); // 삭제할 게시판 글 번호 가져오기
+		
+		IDao dao = sqlsession.getMapper(IDao.class);
+		
+		dao.fbdeleteDao(fbnum);
+		
+		return "redirect:board_list";
+	}
+	
+	
+	
+	
+	
 
 }

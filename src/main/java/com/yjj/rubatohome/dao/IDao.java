@@ -13,8 +13,11 @@ public interface IDao {
 	public void fbhitDao(String fbnum); // 자유게시판 조회수 증가
 	public FBoardDto fbviewDao(String fbnum); // 자유게시판 글 보기
 	
+	public ArrayList<FBoardDto> fbTitleSearchlistDao(String keyeord); // 자유게시판 제목에서 검색한 결과 가져오기
+	public ArrayList<FBoardDto> fbContentSearchlistDao(String keyeord); // 자유게시판 제목에서 검색한 결과 가져오기
+	public ArrayList<FBoardDto> fbWriteSearchlistDao(String keyeord); // 자유게시판 제목에서 검색한 결과 가져오기
 	
-	
+	public void fbdeleteDao(String fbnum); // 자유게시판 글 삭제
 	
 	
 	// member Dao
