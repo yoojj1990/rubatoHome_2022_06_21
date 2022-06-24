@@ -27,7 +27,17 @@ public class HomeController {
 	private SqlSession sqlsession;
 	
 	@RequestMapping(value="/index")
-	public String index() {
+	public String index(Model model) {
+		
+		IDao dao = sqlsession.getMapper(IDao.class);
+		
+		ArrayList<FBoardDto> fboardDtos = dao.fblistDao();
+		
+		model.addAttribute("freeboard01", fboardDtos.get(0));
+		model.addAttribute("freeboard02", fboardDtos.get(1));
+		model.addAttribute("freeboard03", fboardDtos.get(2));
+		model.addAttribute("freeboard04", fboardDtos.get(3));
+		
 		
 		return "index";
 	}
