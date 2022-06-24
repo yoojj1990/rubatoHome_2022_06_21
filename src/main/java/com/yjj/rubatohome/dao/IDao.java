@@ -11,7 +11,7 @@ public interface IDao {
 	public ArrayList<FBoardDto> fblistDao(); // 자유게시판 데이터 가져오기
 	public int fblistcountDao(); // 자유게시판 글 수 
 	public void fbhitDao(String fbnum); // 자유게시판 조회수 증가
-	
+	public FBoardDto fbviewDao(String fbnum); // 자유게시판 글 보기
 	
 	
 	

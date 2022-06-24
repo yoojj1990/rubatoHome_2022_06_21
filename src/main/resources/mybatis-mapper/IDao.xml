@@ -24,6 +24,10 @@
 	</update>
 	
 	
+	<select id="fbviewDao" resultType="com.yjj.rubatohome.dto.FBoardDto">
+		SELECT * FROM freeboard WHERE fbnum = #{param1 }
+	</select>
+	
 	
 	
 		
