@@ -1,16 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head> 
 <meta charset="utf-8">
-<title>클래식기타 커뮤니티</title>
+<title>회원가입</title>
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/common.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/header.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/footer.css">
 <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/board_left.css">
-<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/board_view_main.css">
+<link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath }/resources/css/board_write_main.css">
 </head>
 <body>
 <div id="wrap">
@@ -70,7 +69,7 @@
     <%
     	}
     %>
-    </div> 
+    </div>  
     <%
     	if (sessionId == null) {
     %>
@@ -107,55 +106,36 @@
 
 <section id="main">
   <img src="${pageContext.request.contextPath }/resources/img/comm.gif">
-  <h2 id="board_title">자유 게시판 </h2>
-  <div id="view_title_box"> 
-    <span>${fbview.fbtitle }</span>
-    <span id="info">${fbview.fbname } | 조회 : ${fbview.fbhit } | 개시일 : ${fbview.fbdate }</span>
-  </div>	
-  <p id="view_content">
-    ${fbview.fbcontent }
-  </p>	
-  <hr>
-  <br>
-  	<p>
-  		※ 첨부파일 : 
-  		<a href="${pageContext.request.contextPath }/resources/uploadfiles/${fileInfo.fileName}" style="text-decoration:none">${fileInfo.fileOriName}</a>
-  	</p>
-  	<c:if test="${fileInfo.fileExtension == 'jpg' or fileInfo.fileExtension == 'png' or fileInfo.fileExtension == 'gif' or fileInfo.fileExtension == 'bmp'}">
-	  	<p id="image_view">
-	  		<img width="400" src="${pageContext.request.contextPath }/resources/uploadfiles/${fileInfo.fileName}">
-	  	</p>
-  	</c:if>
-  <br>
-  <hr>
-  <!-- 해당글의 덧글리스트 -->
-  <table border="1" cellpadding="0" cellspacing="0">
-	<c:forEach items="${rblist }" var="rbdto">
-	<tr>
-		<td>아이디 : ${rbdto.rbid }<br><br>
-		${rbdto.rbcontent }<br><br>
-		${rbdto.rbdate }</td>
-	</tr>  
-	</c:forEach>
+  <h2 id="board_title">회원가입 </h2>
+  <div id="write_title"><h2>회원 정보 입력</h2></div>
+  <form action="joinOk" method="post">
+  <table>
+    <tr id="name2">
+      <td class="col1">아이디</td>
+      <td class="col2"><input type="text" name="memberid"></td>
+    </tr>
+    <tr id="name2">
+      <td class="col1">비밀번호</td>
+      <td class="col2"><input type="password" name="memberpw"></td>
+    </tr>
+    <tr id="name2">
+      <td class="col1">이름</td>
+      <td class="col2"><input type="text" name="membername"></td>
+    </tr>
+    <tr id="name2">
+      <td class="col1">이메일</td>
+      <td class="col2"><input type="email" name="memberemail"></td>
+    </tr>
   </table>
-  <hr>	
-  <!-- 덧글 입력 ui -->
-  <div id="comment_box">
-  	<form action="replyOk">
-  	<input type="hidden" name="fbnum" value="${fbview.fbnum }">
-	    <img id="title_comment" src="${pageContext.request.contextPath }/resources/img/title_comment.gif">
-	    <textarea name="replycontent"></textarea>
-	    <input id="ok_ripple" type="image" src="${pageContext.request.contextPath }/resources/img/ok_ripple.gif">
-	    <!-- <img id="ok_ripple" src="${pageContext.request.contextPath }/resources/img/ok_ripple.gif">  -->
-  	</form>
-  </div>
-  
   <div id="buttons">
-    <a href="delete?fbnum=${fbview.fbnum }"><img src="${pageContext.request.contextPath }/resources/img/delete.png"></a>		
-    <a href="board_list"><img src="${pageContext.request.contextPath }/resources/img/list.png"></a>
-    <a href="board_write"><img src="${pageContext.request.contextPath }/resources/img/write.png"></a>			
+    <!-- <a href="#"><img src="${pageContext.request.contextPath }/resources/img/ok.png"></a> -->
+    <input type="image" src="${pageContext.request.contextPath }/resources/img/ok.png">
+    <!-- <a href="board_list"><img src="${pageContext.request.contextPath }/resources/img/list.png"></a>  -->
   </div>
-</section> <!-- section main -->
+  </form>
+</section>
+
+ <!-- section main -->
 <div class="clear"></div>
 <footer>
   <img id="footer_logo" src="${pageContext.request.contextPath }/resources/img/footer_logo.gif">
@@ -170,6 +150,7 @@
     <li><img src="${pageContext.request.contextPath }/resources/img/twitter.gif"></li>
   </ul>
 </footer> <!-- footer -->
+
 </div> <!-- wrap -->
 </body>
 </html>

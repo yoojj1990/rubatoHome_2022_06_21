@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import com.yjj.rubatohome.dto.FBoardDto;
 import com.yjj.rubatohome.dto.FileDto;
+import com.yjj.rubatohome.dto.ReplyDto;
 
 public interface IDao {
 
@@ -26,6 +27,16 @@ public interface IDao {
 	
 	
 	// member Dao
+	
+	public void memberjoinDao(String mid, String mpw, String mname, String memail); // 회원가입 메서드
+	public int checkIdDao(String mid);//회원 아이디 존재 여부 확인
+	public int checkIdPwDao(String mid, String mpw);//로그인 시 회원 아이디와 비번 일치여부 체크
+	
+	
+	//reply Dao
+	
+	public void rbwrite(int rborifbnum, String rbid, String rbcontent);
+	public ArrayList<ReplyDto> rblist(String fbnum); // 덧글이 달린 원글의 게시판 번호를 인수로 호출
 	
 	
 }
