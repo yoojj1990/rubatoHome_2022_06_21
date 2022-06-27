@@ -67,6 +67,8 @@ public class HomeController {
 		model.addAttribute("fblist", fboardDtos);
 		model.addAttribute("listcount", fboardDtos.size());
 		
+		
+		
 		return "board_list";
 	}
 	
@@ -215,7 +217,7 @@ public class HomeController {
 		
 		String replycontent = request.getParameter("replycontent");
 		String rborifbnum = request.getParameter("fbnum");
-		int rborifbnumInt = Integer.parseInt(rborifbnum);
+		int fbnum = Integer.parseInt(rborifbnum);
 		
 		HttpSession session = request.getSession();		
 		String sessionId = (String)session.getAttribute("id");
@@ -230,9 +232,16 @@ public class HomeController {
 		
 		IDao dao = sqlsession.getMapper(IDao.class);
 		
-		dao.rbwrite(rborifbnumInt, rbid, replycontent);
+		dao.rbwrite(fbnum, rbid, replycontent);
 		
-		return "redirect:board_list";
+		dao.rbreplycount(rborifbnum); // 덧글수 1증가
+		
+		model.addAttribute("fbview", dao.fbviewDao(rborifbnum)); // 게시글 내용
+		model.addAttribute("fileInof", dao.fbfileInfoDao(rborifbnum)); // 첨부파일
+		model.addAttribute("rblist", dao.rblist(rborifbnum)); // 덧글
+		
+		
+		return "board_view";
 	}
 	
 	

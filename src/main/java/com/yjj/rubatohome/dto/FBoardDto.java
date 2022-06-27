@@ -9,14 +9,15 @@ public class FBoardDto {
 	private String fbid; // 게시판 글쓴이 아이디
 	private String fbhit; // 조회수
 	private String fbdate; // 게시판 글쓴 날짜
-	
+	private int fbreplycount; // 해당글 덧글 수
+
 	public FBoardDto() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public FBoardDto(int fbnum, String fbname, String fbtitle, String fbcontent, String fbid, String fbhit,
-			String fbdate) {
+			String fbdate, int fbreplycount) {
 		super();
 		this.fbnum = fbnum;
 		this.fbname = fbname;
@@ -25,6 +26,7 @@ public class FBoardDto {
 		this.fbid = fbid;
 		this.fbhit = fbhit;
 		this.fbdate = fbdate;
+		this.fbreplycount = fbreplycount;
 	}
 
 	public int getFbnum() {
@@ -82,7 +84,17 @@ public class FBoardDto {
 	public void setFbdate(String fbdate) {
 		this.fbdate = fbdate;
 	}
+
+	public int getFbreplycount() {
+		return fbreplycount;
+	}
+
+	public void setFbreplycount(int fbreplycount) {
+		this.fbreplycount = fbreplycount;
+	}
 	
+	
+
 	
 	
 }

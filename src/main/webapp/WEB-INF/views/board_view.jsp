@@ -129,12 +129,12 @@
   <br>
   <hr>
   <!-- 해당글의 덧글리스트 -->
-  <table border="1" cellpadding="0" cellspacing="0">
+  <table border="1" cellpadding="0" cellspacing="0" width="760">
 	<c:forEach items="${rblist }" var="rbdto">
-	<tr>
-		<td>아이디 : ${rbdto.rbid }<br><br>
-		${rbdto.rbcontent }<br><br>
-		${rbdto.rbdate }</td>
+	<tr style="border:3px solid #D6ffff;">
+		<td height="20" width="100" style="background-color:#D6FFFF;font-size:15px;" align="center">${rbdto.rbid }</td>
+		<td><br>&nbsp;${rbdto.rbcontent }<br><br>
+		&nbsp;${rbdto.rbdate }</td>
 	</tr>  
 	</c:forEach>
   </table>
